@@ -1,0 +1,27 @@
+<%- include('partials/head') %>
+<article class="recipe">
+  <p><a href="/">← Tất cả công thức</a></p>
+  <span class="badge"><%= recipe.category_name %></span>
+  <h1><%= recipe.title %></h1>
+  <p class="muted"><%= recipe.description %></p>
+  <div class="meta big">⏱ <%= recipe.cook_time %> phút · 👥 <%= recipe.servings %> người · Độ khó: <%= DIFFICULTY[recipe.difficulty] %> · 👁 <%= recipe.views + 1 %> lượt xem</div>
+  <% if (recipe.image_url) { %><img class="hero-img" src="<%= recipe.image_url %>" alt="<%= recipe.title %>"><% } %>
+
+  <div class="two-col">
+    <section class="panel">
+      <h2>Nguyên liệu</h2>
+      <ul class="ingredients">
+        <% ingredients.forEach(function (i) { %>
+          <li><span><%= i.name %></span><strong><%= i.quantity %></strong></li>
+        <% }) %>
+      </ul>
+    </section>
+    <section class="panel">
+      <h2>Cách làm</h2>
+      <ol class="steps">
+        <% steps.forEach(function (s) { %><li><%= s %></li><% }) %>
+      </ol>
+    </section>
+  </div>
+</article>
+<%- include('partials/foot') %>
