@@ -1,0 +1,28 @@
+<%- include('../partials/head') %>
+<div class="bar">
+  <h1>Quản trị công thức</h1>
+  <a class="btn" href="/admin/recipes/new">+ Thêm công thức</a>
+</div>
+<table class="table">
+  <thead><tr><th>#</th><th>Món ăn</th><th>Danh mục</th><th>Thời gian</th><th>Độ khó</th><th>Lượt xem</th><th></th></tr></thead>
+  <tbody>
+  <% recipes.forEach(function (r) { %>
+    <tr>
+      <td><%= r.id %></td>
+      <td><a href="/recipes/<%= r.id %>"><%= r.title %></a></td>
+      <td><%= r.category_name %></td>
+      <td><%= r.cook_time %>’</td>
+      <td><%= DIFFICULTY[r.difficulty] %></td>
+      <td><%= r.views %></td>
+      <td class="actions">
+        <a class="btn btn-sm" href="/admin/recipes/<%= r.id %>/edit">Sửa</a>
+        <form class="inline" method="post" action="/admin/recipes/<%= r.id %>/delete">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button class="btn btn-sm btn-danger" type="submit">Xóa</button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+  </tbody>
+</table>
+<%- include('../partials/foot') %>

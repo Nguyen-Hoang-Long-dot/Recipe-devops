@@ -1,0 +1,27 @@
+groups:
+  - name: recipe-platform
+    rules:
+      - alert: ServiceDown
+        expr: up == 0
+        for: 1m
+        labels: { severity: critical }
+        annotations:
+          summary: "Dich vu {{ $labels.job }} khong phan hoi"
+      - alert: MySQLDown
+        expr: mysql_up == 0
+        for: 1m
+        labels: { severity: critical }
+        annotations:
+          summary: "MySQL khong hoat dong"
+      - alert: ContainerHighMemory
+        expr: container_memory_working_set_bytes{name=~"recipe_.*"} > 400 * 1024 * 1024
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: "Container {{ $labels.name }} dung > 400MB RAM"
+      - alert: HighHttp5xxRate
+        expr: sum(rate(http_requests_total{job="app",status_code=~"5.."}[5m])) > 0.1
+        for: 5m
+        labels: { severity: warning }
+        annotations:
+          summary: "Ung dung tra loi 5xx nhieu bat thuong"

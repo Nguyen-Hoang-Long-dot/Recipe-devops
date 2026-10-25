@@ -1,0 +1,36 @@
+<%- include('../partials/head') %>
+<h1><%= title %></h1>
+<% errors.forEach(function (e) { %><div class="alert alert-err"><%= e %></div><% }) %>
+<form class="form-grid" method="post" action="<%= action %>">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <label>Tên món ăn <input type="text" name="title" required maxlength="200" value="<%= recipe.title %>"></label>
+  <label>Danh mục
+    <select name="category_id" required>
+      <option value="">-- Chọn danh mục --</option>
+      <% categories.forEach(function (c) { %>
+        <option value="<%= c.id %>" <%= Number(recipe.category_id) === c.id ? 'selected' : '' %>><%= c.name %></option>
+      <% }) %>
+    </select>
+  </label>
+  <label>Mô tả ngắn <textarea name="description" rows="2" maxlength="2000"><%= recipe.description %></textarea></label>
+  <div class="row3">
+    <label>Thời gian (phút) <input type="number" name="cook_time" min="1" max="1440" value="<%= recipe.cook_time %>"></label>
+    <label>Khẩu phần (người) <input type="number" name="servings" min="1" max="100" value="<%= recipe.servings %>"></label>
+    <label>Độ khó
+      <select name="difficulty">
+        <% Object.keys(DIFFICULTY).forEach(function (k) { %>
+          <option value="<%= k %>" <%= recipe.difficulty === k ? 'selected' : '' %>><%= DIFFICULTY[k] %></option>
+        <% }) %>
+      </select>
+    </label>
+  </div>
+  <label>Link ảnh (tùy chọn, https://…) <input type="url" name="image_url" maxlength="500" value="<%= recipe.image_url || '' %>"></label>
+  <label>Nguyên liệu (mỗi dòng: <code>Tên | Số lượng</code>)
+    <textarea name="ingredients" rows="8" required placeholder="Thịt ba chỉ | 500 g&#10;Nước mắm | 2 muỗng canh"><%= ingredientsText %></textarea>
+  </label>
+  <label>Các bước thực hiện (mỗi dòng một bước)
+    <textarea name="steps" rows="8" required><%= recipe.steps %></textarea>
+  </label>
+  <div><button class="btn" type="submit">Lưu</button> <a class="btn btn-ghost" href="/admin">Hủy</a></div>
+</form>
+<%- include('../partials/foot') %>
